@@ -7,7 +7,7 @@ import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.ParseException
 
 fun main(args: Array<String>) {
-    val stream: InputStream = FileOrganiser::class.java.classLoader.getResourceAsStream("logging.properties")
+    val stream: InputStream = FilesOrganizer::class.java.classLoader.getResourceAsStream("logging.properties")
     LogManager.getLogManager().readConfiguration(stream)
 
     val parser: CommandLineParser = DefaultParser()
@@ -18,13 +18,13 @@ fun main(args: Array<String>) {
         return
     }
 
-    FileOrganiser.Builder(
+    FilesOrganizer.Builder(
         inputFolderPath = cmd.getOptionValue(CliOptions().inputFolder),
         outputFolderPath = cmd.getOptionValue(CliOptions().outputFolder),
         tree = cmd.hasOption(CliOptions().tree),
         move = cmd.hasOption(CliOptions().move),
         replace = cmd.hasOption(CliOptions().replace)
-    ).build().organise()
+    ).build().organize()
 }
 
 fun printHelp(mgs: String?) {

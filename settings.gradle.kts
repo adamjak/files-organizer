@@ -1,3 +1,3 @@
 
-rootProject.name = "files_organiser"
+rootProject.name = "files_organizer"
 

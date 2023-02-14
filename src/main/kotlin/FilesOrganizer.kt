@@ -1,5 +1,4 @@
 import java.io.File
-import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
@@ -7,14 +6,13 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
 import java.util.Calendar
 import java.util.Date
-import java.util.logging.LogManager
 import java.util.logging.Logger
 import kotlin.io.path.Path
 import kotlin.io.path.notExists
 import kotlin.io.path.pathString
 
 
-class FileOrganiser private constructor(
+class FilesOrganizer private constructor(
     private val inputFolder: File,
     private val outputFolder: File,
     private val tree: Boolean,
@@ -25,10 +23,10 @@ class FileOrganiser private constructor(
         val log: Logger = Logger.getGlobal()
     }
 
-    fun organise() {
-        log.info("Start organise")
+    fun organize() {
+        log.info("Start organize")
         val filesToOrganiser: List<File> = this.inputFolder.listFiles().filter { f -> f.isFile }
-        log.info("Organise ${filesToOrganiser.size} files")
+        log.info("Organize ${filesToOrganiser.size} files")
         filesToOrganiser.forEach {
             this.copyFileToDateFolder(it)
         }
@@ -69,7 +67,7 @@ class FileOrganiser private constructor(
                 }
             }
         } catch (e : java.nio.file.FileAlreadyExistsException) {
-            log.severe("File ${file.name} can not organise because in destination $finalDestination exist file with same name. Use -r modifier to replace it.")
+            log.severe("File ${file.name} can not organize because in destination $finalDestination exist file with same name. Use -r modifier to replace it.")
         }
     }
 
@@ -138,7 +136,7 @@ class FileOrganiser private constructor(
         fun tree(tree: Boolean) = apply { this.tree = tree }
         fun move(move: Boolean) = apply { this.move = move }
         fun replace(replace: Boolean) = apply { this.replace = replace }
-        fun build(): FileOrganiser {
+        fun build(): FilesOrganizer {
             if (this.inputFolderPath == null || this.outputFolderPath == null) throw Exception("Input and output folder path are required")
             if (!Files.isDirectory(Path(inputFolderPath!!))) throw Exception("Input folder path is not folder.")
             if (!Files.isDirectory(Path(outputFolderPath!!))) {
@@ -154,7 +152,7 @@ class FileOrganiser private constructor(
             if (!inputFolder.canRead()) throw Exception("Input folder is not readable.")
             if (!inputFolder.canWrite()) throw Exception("Output folder is not writable.")
 
-            return FileOrganiser(inputFolder, outputFolder, tree, move, replace)
+            return FilesOrganizer(inputFolder, outputFolder, tree, move, replace)
         }
     }
     // endregion
