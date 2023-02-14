@@ -41,5 +41,6 @@ data class CliOptions(
             .addOption(this.outputFolder)
             .addOption(this.tree)
             .addOption(this.move)
+            .addOption(this.replace)
     }
 }
