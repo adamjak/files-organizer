@@ -1,9 +1,9 @@
 # Files organizer
 
-[![License](https://img.shields.io/github/license/adamjak/files-organizer)](https://github.com/adamjak/files-organizer/blob/master/LICENSE)
-![Contributors](https://img.shields.io/github/contributors/adamjak/files-organizer)
-![Last commit](https://img.shields.io/github/last-commit/adamjak/files-organizer)
-![Language](https://img.shields.io/github/languages/top/adamjak/files-organizer)
+[![License](https://img.shields.io/github/license/adamjak/files-organizer "License")](https://github.com/adamjak/files-organizer/blob/master/LICENSE)
+![Contributors](https://img.shields.io/github/contributors/adamjak/files-organizer "Contributors")
+![LastCommit](https://img.shields.io/github/last-commit/adamjak/files-organizer "Last commit")
+![Language](https://img.shields.io/github/languages/top/adamjak/files-organizer "Language")
 
 
 
@@ -41,5 +41,9 @@ $ files_organizer -i /media/user/USB/photos -o ~/pictures/ -m -t
 ```
 This will move all files from `/media/user/USB/photos` to `~/pictures` and create tree directory structure which start with year folder, next continue month folder and last will be day folder in which will be all files with create date whitch represent tree structure of folder names. 
 
+```shell
+files_organizer -i "$(pwd)" -o "$(pwd)" -m 
+```
+This will organise current folder.
 
 
