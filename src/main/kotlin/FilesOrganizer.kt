@@ -115,7 +115,7 @@ class FilesOrganizer private constructor(
                 calendar.time = Date.from(fileTime.toInstant())
                 return YearMonthDay(
                     year = calendar.get(Calendar.YEAR),
-                    month = calendar.get(Calendar.MONTH),
+                    month = calendar.get(Calendar.MONTH) + 1,
                     day = calendar.get(Calendar.DAY_OF_MONTH)
                 )
             }
@@ -150,7 +150,7 @@ class FilesOrganizer private constructor(
             val outputFolder = File(outputFolderPath)
 
             if (!inputFolder.canRead()) throw Exception("Input folder is not readable.")
-            if (!inputFolder.canWrite()) throw Exception("Output folder is not writable.")
+            if (!outputFolder.canWrite()) throw Exception("Output folder is not writable.")
 
             return FilesOrganizer(inputFolder, outputFolder, tree, move, replace)
         }
