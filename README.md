@@ -41,5 +41,9 @@ $ files_organizer -i /media/user/USB/photos -o ~/pictures/ -m -t
 ```
 This will move all files from `/media/user/USB/photos` to `~/pictures` and create tree directory structure which start with year folder, next continue month folder and last will be day folder in which will be all files with create date whitch represent tree structure of folder names. 
 
+```shell
+files_organizer -i "$(pwd)" -o "$(pwd)" -m 
+```
+This will organise current folder.
 
 
