@@ -1,9 +1,9 @@
 # Files organizer
 
-[![License](https://img.shields.io/github/license/adamjak/files-organizer)](https://github.com/adamjak/files-organizer/blob/master/LICENSE)
-![Contributors](https://img.shields.io/github/contributors/adamjak/files-organizer)
-![Last commit](https://img.shields.io/github/last-commit/adamjak/files-organizer)
-![Language](https://img.shields.io/github/languages/top/adamjak/files-organizer)
+[![License](https://img.shields.io/github/license/adamjak/files-organizer "License")](https://github.com/adamjak/files-organizer/blob/master/LICENSE)
+![Contributors](https://img.shields.io/github/contributors/adamjak/files-organizer "Contributors")
+![LastCommit](https://img.shields.io/github/last-commit/adamjak/files-organizer "Last commit")
+![Language](https://img.shields.io/github/languages/top/adamjak/files-organizer "Language")
 
 
 
