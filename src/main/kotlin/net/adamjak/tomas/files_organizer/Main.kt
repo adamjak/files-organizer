@@ -1,3 +1,5 @@
+package net.adamjak.tomas.files_organizer
+
 import java.io.InputStream
 import java.util.logging.LogManager
 import org.apache.commons.cli.CommandLine

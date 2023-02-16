@@ -1,3 +1,5 @@
+package net.adamjak.tomas.files_organizer
+
 import org.apache.commons.cli.Option
 import org.apache.commons.cli.Options
 

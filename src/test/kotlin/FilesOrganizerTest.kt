@@ -1,3 +1,4 @@
+package net.adamjak.tomas.files_organizer
 
 import java.io.File
 import java.nio.file.Files
@@ -6,6 +7,7 @@ import java.nio.file.attribute.FileTime
 import java.time.Instant
 import java.time.LocalDateTime
 import kotlin.test.assertFailsWith
+import net.adamjak.tomas.files_organizer.FilesOrganizer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
