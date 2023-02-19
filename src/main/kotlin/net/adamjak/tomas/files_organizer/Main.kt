@@ -20,13 +20,14 @@ fun main(args: Array<String>) {
         return
     }
 
-    FilesOrganizer.Builder(
-        inputFolderPath = cmd.getOptionValue(CliOptions().inputFolder),
-        outputFolderPath = cmd.getOptionValue(CliOptions().outputFolder),
-        tree = cmd.hasOption(CliOptions().tree),
-        move = cmd.hasOption(CliOptions().move),
-        replace = cmd.hasOption(CliOptions().replace)
-    ).build().organize()
+    FilesOrganizer.Builder()
+        .inputFolderPath(cmd.getOptionValue(CliOptions().inputFolder))
+        .outputFolderPath(cmd.getOptionValue(CliOptions().outputFolder))
+        .tree(cmd.hasOption(CliOptions().tree))
+        .move(cmd.hasOption(CliOptions().move))
+        .replace(cmd.hasOption(CliOptions().replace))
+        .granularity(cmd.getOptionValue(CliOptions().granularity))
+        .build().organize()
 }
 
 fun printHelp(mgs: String?) {

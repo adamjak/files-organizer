@@ -6,6 +6,8 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.nio.file.attribute.BasicFileAttributes
 import java.nio.file.attribute.FileTime
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 import java.util.logging.Logger
@@ -17,9 +19,10 @@ import kotlin.io.path.pathString
 class FilesOrganizer private constructor(
     private val inputFolder: File,
     private val outputFolder: File,
-    private val tree: Boolean,
+    private val folderStruct: FolderStruct,
     private val move: Boolean,
     private val replace: Boolean,
+    private val granularity: Granularity,
 ) {
     companion object {
         val log: Logger = Logger.getGlobal()
@@ -37,7 +40,7 @@ class FilesOrganizer private constructor(
     private fun copyFileToDateFolder(file: File) {
         val folderDesc = this.getFileCreateTime(file)
 
-        val finalDestination = if (this.tree) {
+        val finalDestination = if (this.folderStruct == FolderStruct.TREE) {
             Paths.get(
                 this.outputFolder.path,
                 folderDesc.getYearString(),
@@ -113,39 +116,46 @@ class FilesOrganizer private constructor(
 
         companion object {
             fun fromFileTime(fileTime: FileTime): YearMonthDay {
-                val calendar = Calendar.getInstance()
-                calendar.time = Date.from(fileTime.toInstant())
+                val localDate = LocalDate.ofInstant(fileTime.toInstant(), ZoneId.systemDefault())
                 return YearMonthDay(
-                    year = calendar.get(Calendar.YEAR),
-                    month = calendar.get(Calendar.MONTH) + 1,
-                    day = calendar.get(Calendar.DAY_OF_MONTH)
+                    year = localDate.year,
+                    month = localDate.monthValue,
+                    day = localDate.dayOfMonth
                 )
             }
         }
     }
 
     // region builder
-    data class Builder(
-        var inputFolderPath: String?,
-        var outputFolderPath: String?,
-        var tree: Boolean = false,
-        var move: Boolean = false,
-        var replace: Boolean = false
-    ) {
+    class Builder {
+
+        private lateinit var inputFolderPath: String
+        private lateinit var outputFolderPath: String
+        private var tree: Boolean = false
+        private var move: Boolean = false
+        private var replace: Boolean = false
+        private var granularity: Granularity = Granularity.YEAR_MONTH_DAY
 
         fun inputFolderPath(inputFolderPath: String) = apply { this.inputFolderPath = inputFolderPath }
         fun outputFolderPath(outputFolderPath: String) = apply { this.outputFolderPath = outputFolderPath }
+        fun tree() = apply { this.tree = true}
         fun tree(tree: Boolean) = apply { this.tree = tree }
+        fun move() = apply { this.move = true }
         fun move(move: Boolean) = apply { this.move = move }
+        fun replace() = apply { this.replace = true }
         fun replace(replace: Boolean) = apply { this.replace = replace }
+        fun granularity(granularity: Granularity) = apply { this.granularity = granularity }
+        fun granularity(granularity: String?) = apply {
+            if (granularity != null) this.granularity = Granularity.valueOf(granularity)
+        }
         fun build(): FilesOrganizer {
             if (this.inputFolderPath == null || this.outputFolderPath == null) throw Exception("Input and output folder path are required")
-            if (!Files.isDirectory(Path(inputFolderPath!!))) throw Exception("Input folder path is not folder.")
-            if (!Files.isDirectory(Path(outputFolderPath!!))) {
-                if (Files.exists(Path(outputFolderPath!!))) {
+            if (!Files.isDirectory(Path(inputFolderPath))) throw Exception("Input folder path is not folder.")
+            if (!Files.isDirectory(Path(outputFolderPath))) {
+                if (Files.exists(Path(outputFolderPath))) {
                     throw Exception("Output folder path is not folder.")
                 }
-                Files.createDirectories(Path(outputFolderPath!!))
+                Files.createDirectories(Path(outputFolderPath))
             }
 
             val inputFolder = File(inputFolderPath)
@@ -154,7 +164,13 @@ class FilesOrganizer private constructor(
             if (!inputFolder.canRead()) throw Exception("Input folder is not readable.")
             if (!outputFolder.canWrite()) throw Exception("Output folder is not writable.")
 
-            return FilesOrganizer(inputFolder, outputFolder, tree, move, replace)
+            return FilesOrganizer(
+                inputFolder = inputFolder,
+                outputFolder = outputFolder,
+                folderStruct = if (tree) FolderStruct.TREE else FolderStruct.SINGLE,
+                move = move,
+                replace = replace,
+                granularity = granularity)
         }
     }
     // endregion

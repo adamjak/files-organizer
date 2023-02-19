@@ -47,10 +47,11 @@ class FilesOrganizerTest {
     @Test
     fun `Test organize folder copy` () {
         val tempFile1 = File.createTempFile("temp", "", this.tempDir1.toFile())
-        FilesOrganizer.Builder(
-            inputFolderPath = this.tempDir1.toString(),
-            outputFolderPath = this.tempDir2.toString(),
-        ).build().organize()
+        FilesOrganizer.Builder()
+            .inputFolderPath(this.tempDir1.toString())
+            .outputFolderPath(this.tempDir2.toString())
+            .build()
+            .organize()
 
         Assertions.assertEquals(1,this.tempDir2.toFile().listFiles().size)
 
@@ -67,11 +68,12 @@ class FilesOrganizerTest {
     @Test
     fun `Test organize folder move` () {
         File.createTempFile("temp", "", this.tempDir1.toFile())
-        FilesOrganizer.Builder(
-            inputFolderPath = this.tempDir1.toString(),
-            outputFolderPath = this.tempDir2.toString(),
-            move = true
-        ).build().organize()
+        FilesOrganizer.Builder()
+            .inputFolderPath(this.tempDir1.toString())
+            .outputFolderPath(this.tempDir2.toString())
+            .move()
+            .build()
+            .organize()
 
         Assertions.assertEquals(0,this.tempDir1.toFile().listFiles().size)
         Assertions.assertEquals(1,this.tempDir2.toFile().listFiles().size)
@@ -80,11 +82,12 @@ class FilesOrganizerTest {
     @Test
     fun `Test organize folder tree struct` () {
         val tempFile1 = File.createTempFile("temp", "", this.tempDir1.toFile())
-        FilesOrganizer.Builder(
-            inputFolderPath = this.tempDir1.toString(),
-            outputFolderPath = this.tempDir2.toString(),
-            tree = true
-        ).build().organize()
+        FilesOrganizer.Builder()
+            .inputFolderPath(this.tempDir1.toString())
+            .outputFolderPath(this.tempDir2.toString())
+            .tree()
+            .build()
+            .organize()
 
         Assertions.assertEquals(1,this.tempDir2.toFile().listFiles().size)
 
@@ -114,20 +117,18 @@ class FilesOrganizerTest {
         assertFailsWith<Exception>(
             message = "Input and output folder path are required",
             block = {
-                FilesOrganizer.Builder(
-                    inputFolderPath = null,
-                    outputFolderPath = this.tempDir2.toString(),
-                ).build()
+                FilesOrganizer.Builder()
+                    .outputFolderPath(this.tempDir2.toString())
+                    .build()
             }
         )
 
         assertFailsWith<Exception>(
             message = "Input and output folder path are required",
             block = {
-                FilesOrganizer.Builder(
-                    inputFolderPath = this.tempDir1.toString(),
-                    outputFolderPath = null,
-                ).build()
+                FilesOrganizer.Builder()
+                    .inputFolderPath(this.tempDir1.toString())
+                    .build()
             }
         )
     }
@@ -139,20 +140,20 @@ class FilesOrganizerTest {
         assertFailsWith<Exception>(
             message = "Input folder path is not folder.",
             block = {
-                FilesOrganizer.Builder(
-                    inputFolderPath = tempFile1.toString(),
-                    outputFolderPath = this.tempDir2.toString(),
-                ).build()
+                FilesOrganizer.Builder()
+                    .inputFolderPath(tempFile1.toString())
+                    .outputFolderPath(this.tempDir2.toString())
+                    .build()
             }
         )
 
         assertFailsWith<Exception>(
             message = "Output folder path is not folder.",
             block = {
-                FilesOrganizer.Builder(
-                    inputFolderPath = this.tempDir1.toString(),
-                    outputFolderPath = tempFile1.toString(),
-                ).build()
+                FilesOrganizer.Builder()
+                    .inputFolderPath(this.tempDir1.toString())
+                    .outputFolderPath(tempFile1.toString())
+                    .build()
             }
         )
     }

@@ -35,7 +35,13 @@ data class CliOptions(
         .longOpt("replace")
         .desc("Replace existing file with copied file.")
         .hasArg(false)
-        .build()
+        .build(),
+    val granularity : Option = Option.builder()
+        .option("g")
+        .longOpt("granularity")
+        .desc("Set folder granularity. Available options are: ${Granularity.values().joinToString(", ")}")
+        .hasArg(true)
+        .build(),
 ) {
     fun allOptions() : Options {
         return Options()
@@ -44,5 +50,6 @@ data class CliOptions(
             .addOption(this.tree)
             .addOption(this.move)
             .addOption(this.replace)
+            .addOption(this.granularity)
     }
 }
